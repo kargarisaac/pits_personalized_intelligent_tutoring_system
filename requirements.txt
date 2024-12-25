@@ -1,0 +1,14 @@
+llama_index==0.10.15
+llama-index-program-evaporate==0.1.2
+openai==1.13.3
+html2text
+streamlit
+pypdf
+docx2txt
+tree_sitter
+tree_sitter_languages
+PYYAML
+wikipedia
+rank-bm25
+guardrails-ai
+sentence-transformers

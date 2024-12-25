@@ -1,0 +1,8 @@
+.env
+cache/
+slides/
+index_storage/
+.vscode/
+ingestion_storage/
+session_data/
+__pycache__/
