@@ -8,6 +8,37 @@ import os
 
 
 def main():
+    """
+    Main function that runs the Personalized Intelligent Tutoring System (P.I.T.S.) application.
+
+    This function handles:
+    - Application page configuration and sidebar setup
+    - OpenAI API key collection and validation
+    - User session management including:
+        - New user onboarding
+        - Session resumption
+        - Quiz initiation
+        - Training UI display
+    - User navigation options for returning users
+
+    The function uses Streamlit's session state to maintain user data and application state
+    across reruns. It provides options for users to:
+    - Resume their previous study session
+    - Start a new session
+    - Take a quiz (if previously initiated)
+    - Begin the onboarding process (for new users)
+
+    Global State:
+        st.session_state: Stores various session variables including:
+            - OPENAI_API_KEY: API key for OpenAI integration
+            - show_quiz: Boolean flag for quiz display
+            - resume_session: Boolean flag for session resumption
+            - user_name: String containing user's name
+            - study_subject: String containing the subject being studied
+
+    Environment Variables:
+        OPENAI_API_KEY: Sets the OpenAI API key in environment variables
+    """
     st.set_page_config(layout="wide")
     st.sidebar.title("P.I.T.S.")
     st.sidebar.markdown("### Your Personalized Intelligent Tutoring System")
@@ -51,4 +82,10 @@ def main():
 
 
 if __name__ == "__main__":
+    """
+    Entry point of the application.
+    
+    When the script is run directly (not imported as a module),
+    this block executes the main() function to start the application.
+    """
     main()

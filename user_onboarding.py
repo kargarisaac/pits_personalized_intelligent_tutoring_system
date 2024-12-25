@@ -11,31 +11,57 @@ import pandas as pd
 
 
 def user_onboarding():
+    """
+    Handles the user onboarding process in the Streamlit application.
+
+    This function manages:
+    - User name collection
+    - Study subject selection
+    - Study goal definition
+    - File upload functionality
+    - Difficulty level selection
+    - Quiz assessment option
+    - Document processing and indexing
+    - Training material generation
+
+    The function uses Streamlit session state to maintain user data across reruns
+    and integrates with various backend services for document processing and quiz generation.
+
+    Returns:
+        None
+    """
+    # Get user's name
     user_name = st.text_input("What is your name?")
     if not user_name:
         return
 
+    # Store user name in session state
     st.session_state["user_name"] = user_name
     st.write(f"Hello {user_name}. It's nice meeting you!")
 
+    # Get study subject
     study_subject = st.text_input("What subject would you like to study?")
     if not study_subject:
         return
 
+    # Store study subject in session state
     st.session_state["study_subject"] = study_subject
     st.write(f"Okay {user_name}, let's focus on {study_subject}.")
 
+    # Get study goal
     study_goal = st.text_input(
         "Detail any specific goal for your study or just leave it blank:",
         key="Study Goal",
     )
     st.session_state["study_goal"] = study_goal or "No specific goal"
 
+    # Handle file upload if study goal is provided
     if study_goal:
         st.write("Do you want to upload any study materials?")
         uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True)
         finish_upload = st.button("FINISH UPLOAD")
 
+        # Process uploaded files
         if finish_upload and uploaded_files:
             saved_file_names = []
             for uploaded_file in uploaded_files:
@@ -45,10 +71,12 @@ def user_onboarding():
                 saved_file_names.append(uploaded_file.name)
                 st.write(f"You have uploaded {uploaded_file.name}")
 
+            # Store uploaded files information in session state
             st.session_state["uploaded_files"] = saved_file_names
             st.session_state["finish_upload"] = True
             st.info("Uploading files...")
 
+    # Handle difficulty level selection
     if "finish_upload" in st.session_state or "difficulty_level" in st.session_state:
         st.write("Please select your current knowledge level on the topic")
         difficulty_level = st.radio(
@@ -59,6 +87,7 @@ def user_onboarding():
         proceed_button = st.button("Proceed")
         st.write(f"Your choice: {difficulty_level}")
 
+        # Process user selection and generate materials
         if proceed_button:
             save_session(st.session_state)
             if difficulty_level == "Take a quiz to assess":
@@ -73,6 +102,7 @@ def user_onboarding():
                 st.info("Indexing complete. Generating slides...")
                 generate_slides(study_subject)
             else:
+                # Log user's study preferences and generate materials
                 log_action(
                     f"{user_name} wants to study the topic of {study_subject}, "
                     f"aiming to achieve the following goal: '{study_goal}'. "

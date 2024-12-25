@@ -10,6 +10,30 @@ import os
 
 
 def ingest_documents(model_provider=None):
+    """
+    Processes and ingests documents from a specified storage path for use in the application.
+
+    This function performs several key operations:
+    1. Reads documents from the STORAGE_PATH directory
+    2. Logs each document upload
+    3. Initializes or loads an existing cache
+    4. Processes documents through an ingestion pipeline that:
+       - Splits text into manageable chunks
+       - Generates summaries
+       - Creates embeddings using OpenAI's embedding model
+
+    Args:
+        model_provider (str, optional): The model provider to use for processing.
+            Defaults to DEFAULT_MODEL_PROVIDER if None.
+
+    Returns:
+        list: A list of processed nodes containing the document chunks with their
+             embeddings and metadata.
+
+    Raises:
+        FileNotFoundError: If STORAGE_PATH directory doesn't exist
+        Exception: If there are issues with document processing or embedding generation
+    """
     if model_provider is None:
         model_provider = DEFAULT_MODEL_PROVIDER
 
